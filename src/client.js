@@ -186,20 +186,27 @@ Client.prototype.connect = function (args, isStartup = false) {
 	if (args.channels) {
 		let badName = false;
 
-		args.channels.forEach((chan) => {
-			if (!chan.name) {
-				badName = true;
-				return;
-			}
+		args.channels
+			.filter((chan) => {
+				return (
+					!Helper.config.lockChannels.enable ||
+					Helper.config.lockChannels.channels.indexOf(chan.name) !== -1
+				);
+			})
+			.forEach((chan) => {
+				if (!chan.name) {
+					badName = true;
+					return;
+				}
 
-			channels.push(
-				client.createChannel({
-					name: chan.name,
-					key: chan.key || "",
-					type: chan.type,
-				})
-			);
-		});
+				channels.push(
+					client.createChannel({
+						name: chan.name,
+						key: chan.key || "",
+						type: chan.type,
+					})
+				);
+			});
 
 		if (badName && client.name) {
 			log.warn(
@@ -216,6 +223,12 @@ Client.prototype.connect = function (args, isStartup = false) {
 		channels = args.join
 			.replace(/,/g, " ")
 			.split(/\s+/g)
+			.filter((chan) => {
+				return (
+					!Helper.config.lockChannels.enable ||
+					Helper.config.lockChannels.channels.indexOf(chan) !== -1
+				);
+			})
 			.map((chan) => {
 				if (!chan.match(/^[#&!+]/)) {
 					chan = `#${chan}`;

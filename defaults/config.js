@@ -259,6 +259,22 @@ module.exports = {
 	// This value is set to `false` by default.
 	lockNetwork: false,
 
+	// ### `lockChannels`
+	//
+	// Lock the user to certain channels.
+	//
+	// The available keys for the `lockChannels` object are:
+	//
+	// - `enable`: When `true`, the user is locked to certain channels.
+	// - `channels`: Channel names that are allowed for the user to join.
+	//
+	// The value of `enable` is set to `false` to disable channel locking.
+	// The default value of `channels` is `[]`.
+	lockChannels: {
+		enable: false,
+		channels: [],
+	},
+
 	// ## User management
 
 	// ### `messageStorage`
