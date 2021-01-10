@@ -267,8 +267,11 @@ module.exports = {
 	//
 	// - `enable`: When `true`, the user is locked to certain channels.
 	// - `channels`: Channel names that are allowed for the user to join.
+	//   It is an array of strings which supports regular expressions.
+	//   Example: ["^#lobby$", "^#chan"] will allow the user to join #lobby
+	//   and any channel that starts with #chan.
 	//
-	// The value of `enable` is set to `false` to disable channel locking.
+	// The default value of `enable` is set to `false` to disable channel locking.
 	// The default value of `channels` is `[]`.
 	lockChannels: {
 		enable: false,

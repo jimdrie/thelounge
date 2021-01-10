@@ -43,6 +43,7 @@ const Helper = {
 	getDefaultNick,
 	parseHostmask,
 	compareHostmask,
+	isAllowedChannel,
 
 	password: {
 		hash: passwordHash,
@@ -318,4 +319,15 @@ function compareHostmask(a, b) {
 		(a.ident.toLowerCase() === b.ident.toLowerCase() || a.ident === "*") &&
 		(a.hostname.toLowerCase() === b.hostname.toLowerCase() || a.hostname === "*")
 	);
+}
+
+function isAllowedChannel(channel) {
+	if (!this.config.lockChannels.enable) {
+		return true;
+	}
+	let allowed = false;
+	this.config.lockChannels.channels.forEach((allowedChannel) => {
+		allowed = allowed || new RegExp(allowedChannel, "i").test(channel);
+	});
+	return allowed;
 }

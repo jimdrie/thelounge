@@ -187,12 +187,7 @@ Client.prototype.connect = function (args, isStartup = false) {
 		let badName = false;
 
 		args.channels
-			.filter((chan) => {
-				return (
-					!Helper.config.lockChannels.enable ||
-					Helper.config.lockChannels.channels.indexOf(chan.name) !== -1
-				);
-			})
+			.filter((chan) => Helper.isAllowedChannel(chan.name))
 			.forEach((chan) => {
 				if (!chan.name) {
 					badName = true;
@@ -223,12 +218,7 @@ Client.prototype.connect = function (args, isStartup = false) {
 		channels = args.join
 			.replace(/,/g, " ")
 			.split(/\s+/g)
-			.filter((chan) => {
-				return (
-					!Helper.config.lockChannels.enable ||
-					Helper.config.lockChannels.channels.indexOf(chan) !== -1
-				);
-			})
+			.filter((chan) => Helper.isAllowedChannel(chan))
 			.map((chan) => {
 				if (!chan.match(/^[#&!+]/)) {
 					chan = `#${chan}`;
